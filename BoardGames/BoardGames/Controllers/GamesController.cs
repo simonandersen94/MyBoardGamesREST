@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BoardGames.Model;
 using BoardGames.BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BoardGames.Controllers {
     [Route("api/[controller]")]
@@ -39,19 +40,6 @@ namespace BoardGames.Controllers {
             return foundReturns;
         }
 
-        //[HttpGet("players/{no}")]
-        //public ActionResult<List<Game>> GetGamesByNoOfPlayers(int no) {
-        //    ActionResult<List<Game>>? foundReturns;
-
-        //    List<Game> foundGames = _gamesControl.GetGameByNoOfPlayers(no);
-        //    if (foundGames != null) {
-        //        foundReturns = Ok(foundGames);
-        //    } else {
-        //        foundReturns = new StatusCodeResult(204);
-        //    }
-        //    return foundReturns;
-        //}
-
         [HttpGet("players/{no}")]
         public ActionResult<MergedGame> GetGamesByNoOfPlayers(int no) {
             ActionResult<MergedGame>? foundReturn = null;
@@ -68,7 +56,7 @@ namespace BoardGames.Controllers {
         public ActionResult<List<Game>> GetAll() {
             ActionResult<List<Game>>? foundReturns;
 
-            List<Game> foundGames =_gamesControl.GetAll();
+            List<Game> foundGames = _gamesControl.GetAll();
             if (foundGames != null) {
                 foundReturns = Ok(foundGames);
             } else {
@@ -77,6 +65,7 @@ namespace BoardGames.Controllers {
             return foundReturns;
         }
 
+        //[Authorize]
         [HttpDelete("{id}")]
         public ActionResult Delete(int id) {
             ActionResult result;
@@ -90,6 +79,7 @@ namespace BoardGames.Controllers {
             return result;
         }
 
+        //[Authorize]
         [HttpPost]
         public ActionResult Create([FromBody] Game game) {
             ActionResult foundResult;
@@ -103,6 +93,7 @@ namespace BoardGames.Controllers {
             return foundResult;
         }
 
+        //[Authorize]
         [HttpPut("{id}")]
         public ActionResult<bool> Update(int id, [FromBody] Game game) {
             ActionResult<bool> result;
@@ -114,6 +105,18 @@ namespace BoardGames.Controllers {
                 } else {
                     result = BadRequest();
                 }
+            } else {
+                result = BadRequest();
+            }
+            return result;
+        }
+
+        [HttpGet("amount")]
+        public ActionResult<int> GetAmount() {
+            ActionResult<int> result;
+            int amount = _gamesControl.GetAmount();
+            if (amount != 0) {
+                result = Ok(amount);
             } else {
                 result = BadRequest();
             }

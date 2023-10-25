@@ -101,5 +101,18 @@ namespace BoardGames.Data {
             }
             return rowsAffected > 0;
         }
+
+        public int GetAmount() {
+            int amountOfGames = 0;
+            string sql =
+                @"SELECT COUNT(versionid)
+                FROM GameVersion";
+            using (SqlConnection connection = new SqlConnection(_connectionString)) {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sql, connection);
+                amountOfGames = (int)command.ExecuteScalar();
+            }
+            return amountOfGames;
+        }
     }
 }

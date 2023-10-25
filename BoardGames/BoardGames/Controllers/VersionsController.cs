@@ -1,6 +1,7 @@
 ﻿using BoardGames.BusinessLogic;
 using BoardGames.BusinessLogic.Interfaces;
 using BoardGames.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BoardGames.Controllers {
@@ -54,6 +55,7 @@ namespace BoardGames.Controllers {
             return foundReturn;
         }
 
+        //[Authorize]
         [HttpDelete("{id}")]
         public ActionResult Delete(int id) {
             ActionResult result;
@@ -67,6 +69,7 @@ namespace BoardGames.Controllers {
             return result;
         }
 
+        //[Authorize]
         [HttpPost]
         public ActionResult Create([FromBody] GameVersion version) {
             ActionResult foundResult;
@@ -80,6 +83,7 @@ namespace BoardGames.Controllers {
             return foundResult;
         }
 
+        //[Authorize]
         [HttpPut("{id}")]
         public ActionResult<bool> Update(int id, [FromBody] GameVersion version) {
             ActionResult<bool> result;

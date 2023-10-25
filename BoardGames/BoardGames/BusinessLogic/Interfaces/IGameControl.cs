@@ -8,5 +8,6 @@ namespace BoardGames.BusinessLogic.Interfaces {
         bool Delete(int id);
         int Create(Game game);
         bool Update(int id, Game game);
+        int GetAmount();
     }
 }

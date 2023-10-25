@@ -22,53 +22,53 @@ namespace BoardGames.BusinessLogic {
             return foundGame;
         }
 
-    public MergedGame GetGameByNoOfPlayers(int no) {
-        List<Game>? foundGames = null;
-        List<GameVersion>? foundVersions = null;
-        List<GameCharacter>? foundCharacters = null;
+        public MergedGame GetGameByNoOfPlayers(int no) {
+            List<Game>? foundGames = null;
+            List<GameVersion>? foundVersions = null;
+            List<GameCharacter>? foundCharacters = null;
 
-        Game gameToMerge = null;
-        GameVersion versionToMerge = null;
-        List<GameCharacter> charactersToMerge = new List<GameCharacter>();
+            Game gameToMerge = null;
+            GameVersion versionToMerge = null;
+            List<GameCharacter> charactersToMerge = new List<GameCharacter>();
 
-        GameCharacter tempCharacter = null;
-        MergedGame foundMergedGame = new MergedGame();
-        int randomIndex = -1;
+            GameCharacter tempCharacter = null;
+            MergedGame foundMergedGame = new MergedGame();
+            int randomIndex = -1;
 
-        try {
-            foundGames = _gameAccess.GetGameByNoOfPlayers(no);
-            randomIndex = new Random().Next(foundGames.Count);
-            gameToMerge = foundGames.ElementAt(randomIndex);
+            try {
+                foundGames = _gameAccess.GetGameByNoOfPlayers(no);
+                randomIndex = new Random().Next(foundGames.Count);
+                gameToMerge = foundGames.ElementAt(randomIndex);
 
-            randomIndex = -1;
+                randomIndex = -1;
 
-            foundVersions = _versionAccess.GetVersionByGameId(gameToMerge.GameId);
-            randomIndex = new Random().Next(foundVersions.Count);
-            versionToMerge = foundVersions.ElementAt(randomIndex);
+                foundVersions = _versionAccess.GetVersionByGameId(gameToMerge.GameId);
+                randomIndex = new Random().Next(foundVersions.Count);
+                versionToMerge = foundVersions.ElementAt(randomIndex);
 
-            randomIndex = -1;
+                randomIndex = -1;
 
-            foundCharacters = _characterAccess.GetCharacterByVersionId(versionToMerge.VersionId);
-            int i = 1;
-            while (i <= no && foundCharacters.Count() != 0) {
-                randomIndex = new Random().Next(foundCharacters.Count);
-                if (randomIndex >= 0) {
-                    tempCharacter = foundCharacters.ElementAt(randomIndex);
-                    if (tempCharacter != null && !charactersToMerge.Contains(tempCharacter)) {
-                        charactersToMerge.Add(tempCharacter);
-                        randomIndex = -1;
-                        i++;
+                foundCharacters = _characterAccess.GetCharacterByVersionId(versionToMerge.VersionId);
+                int i = 1;
+                while (i <= no && foundCharacters.Count() != 0) {
+                    randomIndex = new Random().Next(foundCharacters.Count);
+                    if (randomIndex >= 0) {
+                        tempCharacter = foundCharacters.ElementAt(randomIndex);
+                        if (tempCharacter != null && !charactersToMerge.Contains(tempCharacter)) {
+                            charactersToMerge.Add(tempCharacter);
+                            randomIndex = -1;
+                            i++;
+                        }
                     }
                 }
+                foundMergedGame.Game = gameToMerge;
+                foundMergedGame.GameVersion = versionToMerge;
+                foundMergedGame.GameCharacter = charactersToMerge;
+            } catch {
+                Console.WriteLine("No games found");
             }
-            foundMergedGame.Game = gameToMerge;
-            foundMergedGame.GameVersion = versionToMerge;
-            foundMergedGame.GameCharacter = charactersToMerge;
-        } catch {
-            Console.WriteLine("No games found");
+            return foundMergedGame;
         }
-        return foundMergedGame;
-    }
 
         public List<Game> GetAll() {
             return _gameAccess.GetAll();
@@ -88,6 +88,10 @@ namespace BoardGames.BusinessLogic {
 
         public bool Update(int id, Game game) {
             return _gameAccess.Update(id, game);
+        }
+
+        public int GetAmount() {
+            return _gameAccess.GetAmount();
         }
     }
 }
